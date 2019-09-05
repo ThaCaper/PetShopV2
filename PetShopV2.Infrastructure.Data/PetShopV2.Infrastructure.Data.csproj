@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DomainService\PetShopV2.Core.csproj" />
+    <ProjectReference Include="..\PetShopV2.Core.Entity\PetShopV2.Core.Entity.csproj" />
+  </ItemGroup>
+
+</Project>
