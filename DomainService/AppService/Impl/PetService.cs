@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
+using System.IO;
 using System.Linq;
 using DomainService.DomainService;
-using PetShopV2.Core.AppService;
 using PetShopV2.Core.Entity;
 
-namespace DomainService.Appservice.Impl
+namespace PetShopV2.Core.AppService.Impl
 {
     public class PetService: IPetService
     {
@@ -19,6 +18,22 @@ namespace DomainService.Appservice.Impl
 
         public Pet newPet(string name, string type, DateTime birthday, string color, double price, string previousOwner)
         {
+            if (string.IsNullOrEmpty(name))
+            {
+                throw new InvalidDataException("Give it a name please");
+            }
+            if (string.IsNullOrEmpty(type))
+            {
+                throw new InvalidDataException("A pet can't be without a type");
+            }
+            if (string.IsNullOrEmpty(color))
+            {
+                throw new InvalidDataException("A pet always a certain color");
+            }
+            if (birthday > DateTime.Now)
+            {
+                throw new InvalidDataException("Can't be born in the future");
+            }
             var pet = new Pet()
             {
                 Name = name,
@@ -70,7 +85,20 @@ namespace DomainService.Appservice.Impl
 
         public List<Pet> Cheapest5Pets()
         {
-            throw new NotImplementedException();
+            List<Pet> cheapestPets = new List<Pet>();
+            List<Pet> allPets = GetAllPets();
+            allPets.Sort();
+            if (allPets.Count <= 5)
+            {
+                return allPets;
+            }
+
+            for (int i = 0; i < 5; i++)
+            {
+                cheapestPets.Add(allPets[i]);
+            }
+
+            return cheapestPets;
         }
     }
 }

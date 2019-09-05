@@ -10,7 +10,7 @@ namespace PetShopV2.Infrastructure.Data
         public Pet CreatePet(Pet createdPet)
         {
             createdPet.Id = FakeDB.Id++;
-            FakeDB.pets.Add(createdPet);
+            FakeDB.AllPets.ToList().Add(createdPet);
             return createdPet;
         }
 
@@ -22,7 +22,7 @@ namespace PetShopV2.Infrastructure.Data
                 return null;
             }
 
-            FakeDB.pets.Remove(petFound);
+            FakeDB.AllPets.ToList().Remove(petFound);
             return petFound;
         }
 
@@ -43,22 +43,19 @@ namespace PetShopV2.Infrastructure.Data
 
         public IEnumerable<Pet> GetAllPets()
         {
-            return FakeDB.pets;
+            return FakeDB.AllPets;
         }
 
         public Pet GetPetById(int id)
         {
-            return FakeDB.pets.Select(p => new Pet()
+            foreach (var pet in FakeDB.AllPets)
             {
-                Id = p.Id,
-                Name = p.Name,
-                Type = p.Type,
-                BirthDate = p.BirthDate,
-                Color = p.Color,
-                PreviousOwner = p.PreviousOwner,
-                Price = p.Price
-            }).
-                FirstOrDefault(p => p.Id == id);
+                if (pet.Id == id)
+                {
+                    return pet;
+                }
+            }
+            return null;
         }
     }
 }
