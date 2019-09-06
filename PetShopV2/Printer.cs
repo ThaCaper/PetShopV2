@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using PetShopV2.Core.AppService;
 using PetShopV2.Core.Entity;
 
-namespace PetShopV2
+namespace PetShopV2.ConsoleApp
 {
     public class Printer : IPrinter
     {
