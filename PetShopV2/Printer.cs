@@ -24,12 +24,13 @@ namespace PetShopV2
                 "Delete Pet",
                 "Manage Pet",
                 "Check out the 5 cheapest Pets",
+                "Search Pet by Type",
                 "Exit"
             };
 
             var selection = ShowMenu(menuItems);
 
-            while (selection != 6)
+            while (selection != 7)
             {
                 switch (selection)
                 {
@@ -49,6 +50,9 @@ namespace PetShopV2
                     case 5:
                         Cheapest5Pets();
                         break;
+                    case 6:
+                        SearchPetByType();
+                        break;
                     default:
                         break;
                 }
@@ -56,6 +60,21 @@ namespace PetShopV2
                 selection = ShowMenu(menuItems);
             }
             Console.WriteLine("Byeeeeeee");
+        }
+
+        #region Pet related methods
+
+        private void SearchPetByType()
+        {
+            Console.WriteLine("Write the pet type you want:\n ");
+            string type;
+            while ((type = Console.ReadLine()).Length == 0)
+            {
+                Console.WriteLine("Ex: Dog, Cat, Goat...");
+            }
+
+            List<Pet> resultOfTypePets = _petService.SearchPetByType(type);
+            ShowSearchResults(resultOfTypePets);
         }
 
         private void Cheapest5Pets()
@@ -70,19 +89,39 @@ namespace PetShopV2
 
             Console.WriteLine("Updating " + petToUpdate.Name + " " + petToUpdate.Type);
 
-            var newName = AskQuestion("New name: ");
-            AskQuestion("New Price: ");
-            double newPrice = double.Parse(Console.ReadLine());
+            AskQuestion("New name: ");
+            string newName;
+            while ((newName = Console.ReadLine()).Length == 0)
+            {
+                Console.WriteLine("A pet must have a name! ");
+            }
 
+            AskQuestion("New Price: ");
+            double newPrice;
+            while (!double.TryParse(Console.ReadLine(), out newPrice))
+            {
+                Console.WriteLine("Please find the right price for the pet!");
+            }
             AskQuestion("\nNew Sold Date maybe?");
             AskQuestion("Year: ");
-            int years = int.Parse(Console.ReadLine());
+            int years;
+            while (!int.TryParse(Console.ReadLine(), out years))
+            {
+                Console.WriteLine("Please write a year in 4 digits, ex: 1999! ");
+            }
 
             AskQuestion("Month: ");
-            int month = int.Parse(Console.ReadLine());
-
+            int month;
+            while (!int.TryParse(Console.ReadLine(), out month))
+            {
+                Console.WriteLine("Please write a month from 1-12! ");
+            }
             AskQuestion("Day: ");
-            int day = int.Parse(Console.ReadLine());
+            int day;
+            while (!int.TryParse(Console.ReadLine(), out day))
+            {
+                Console.WriteLine("Please write a year in 4 digits, ex: 1999 ");
+            }
             DateTime birthdate = DateTime.Now.AddYears(years).AddMonths(month).AddDays(day);
 
             _petService.UpdatePet(new Pet()
@@ -103,17 +142,66 @@ namespace PetShopV2
 
         private void AddPet()
         {
-            var type = AskQuestion("Pet Type:");
-            var name = AskQuestion("The pets name: ");
-            AskQuestion("Years old: ");
-            int years = int.Parse(Console.ReadLine());
-            DateTime birthdate = DateTime.Today.AddYears(years);
-            var color = AskQuestion("Color: ");
-            AskQuestion("Price: ");
-            double priced = double.Parse(Console.ReadLine());
-            var previousOwner = AskQuestion("Who was the previous owner?: ");
-            Pet pet = _petService.newPet(name, type, birthdate, color, priced, previousOwner);
+            AskQuestion("Pet Type:");
+            string type;
+            while ((type = Console.ReadLine()).Length == 0)
+            {
+                Console.WriteLine("A pet must have a name! ");
+            }
 
+            AskQuestion("The pets name: ");
+            string name;
+            while ((name = Console.ReadLine()).Length == 0)
+            {
+                Console.WriteLine("A pet must have a name! ");
+            }
+
+            AskQuestion("What year was it born?: ");
+            int years;
+            while (!int.TryParse(Console.ReadLine(), out years))
+            {
+                Console.WriteLine("When was it born?");
+            }
+
+            AskQuestion("What Month was it born?: ");
+            int month;
+            while (!int.TryParse(Console.ReadLine(), out month))
+            {
+                Console.WriteLine("Please write a month from 1-12! ");
+            }
+
+            AskQuestion("What Day was it born?: ");
+            int day;
+            while (!int.TryParse(Console.ReadLine(), out day))
+            {
+                Console.WriteLine("Please write a year in 4 digits, ex: 1999 ");
+            }
+            DateTime birthdate = DateTime.Today.AddYears(years).AddMonths(month).AddDays(day);
+
+            AskQuestion("Color: ");
+            string color;
+            while ((color = Console.ReadLine()).Length == 0)
+            {
+                Console.WriteLine("Must have a color");
+            }
+
+
+            AskQuestion("Price: ");
+            double priced;
+            while (!double.TryParse(Console.ReadLine(), out priced))
+            {
+                Console.WriteLine("Ex: 1999.99");
+            }
+
+            AskQuestion("Who was the previous owner?: ");
+            string previousOwner;
+            while ((previousOwner = Console.ReadLine()).Length == 0)
+            {
+                Console.WriteLine("Must have an owner");
+            }
+
+            Pet pet = _petService.newPet(name, type, birthdate, color, priced, previousOwner);
+            Console.WriteLine("Pet have been added! ");
             _petService.createPet(pet);
         }
 
@@ -140,6 +228,9 @@ namespace PetShopV2
             return id;
         }
 
+        #endregion
+
+
         private int ShowMenu(string[] menuItems)
         {
             Console.WriteLine("Select what you want to do\n");
@@ -152,7 +243,7 @@ namespace PetShopV2
             int selection;
             while (!int.TryParse(Console.ReadLine(), out selection)
                    || selection < 1
-                   || selection > 6)
+                   || selection > 7)
             {
                 Console.WriteLine("Please select a number between 1-5");
             }
@@ -167,6 +258,21 @@ namespace PetShopV2
             return Console.ReadLine();
         }
 
+        private void ShowSearchResults(List<Pet> searchResults)
+        {
+            if (searchResults.Count != 0)
+            {
+                Console.WriteLine("Results:");
+                foreach (var pet in searchResults)
+                {
+                    Console.WriteLine(pet.Name + " the " + pet.Type);
+                }
+            }
+            else
+            {
+                Console.WriteLine("No Pets found");
+            }
+        }
 
     }
 }
