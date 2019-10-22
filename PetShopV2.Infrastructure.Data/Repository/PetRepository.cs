@@ -3,13 +3,13 @@ using System.Linq;
 using DomainService.DomainService;
 using PetShopV2.Core.Entity;
 
-namespace PetShopV2.Infrastructure.Data
+namespace PetShopV2.Infrastructure.Data.Repository
 {
     public class PetRepository: IPetRepository
     {
         public Pet CreatePet(Pet createdPet)
         {
-            createdPet.Id = FakeDB.Id++;
+            createdPet.Id = FakeDB.PetId++;
             FakeDB.AllPets.ToList().Add(createdPet);
             return createdPet;
         }

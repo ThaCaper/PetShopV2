@@ -7,8 +7,11 @@ namespace PetShopV2.Infrastructure.Data
 {
     public class FakeDB
     {
-        public static int Id = 1;
+        public static int PetId;
         public static IEnumerable<Pet> AllPets;
+
+        public static int OwnerId;
+        public static IEnumerable<Owner> AllOwners;
 
         public static void InitData()
         {
@@ -20,7 +23,6 @@ namespace PetShopV2.Infrastructure.Data
                 Type = "Dog",
                 Name = "Mollie",
                 Color = "Brown",
-                PreviousOwner = "Claus Pedersen",
                 Price = 1500,
                 SoldDate = DateTime.Today,
                 BirthDate = DateTime.Now.AddYears(2018).AddMonths(11).AddDays(11),
@@ -32,7 +34,7 @@ namespace PetShopV2.Infrastructure.Data
                 Type = "Fish",
                 Name = "Goldie",
                 Color = "Yellow",
-                PreviousOwner = "Søren Nieslsen",
+                
                 BirthDate = DateTime.Now.AddYears(2017).AddMonths(7).AddDays(23),
                 Price = 500,
                 SoldDate = DateTime.Today
@@ -44,7 +46,7 @@ namespace PetShopV2.Infrastructure.Data
                 Type = "PetPig",
                 Name = "Snuffle",
                 Color = "Pinky",
-                PreviousOwner = "Russien McDonald",
+                
                 Price = 3000,
                 SoldDate = DateTime.Today,
                 BirthDate = DateTime.Now.AddYears(2019).AddMonths(2).AddDays(2),
@@ -56,7 +58,6 @@ namespace PetShopV2.Infrastructure.Data
                 Type = "Goat",
                 Name = "Lammie",
                 Color = "Hvid",
-                PreviousOwner = "Danny Poulsen",
                 Price = 4000,
                 SoldDate = DateTime.Today,
                 BirthDate = DateTime.Now.AddYears(2016).AddMonths(6).AddDays(4),
@@ -68,7 +69,6 @@ namespace PetShopV2.Infrastructure.Data
                 Type = "Cow",
                 Name = "Truffle",
                 Color = "Sort",
-                PreviousOwner = "Henrik Venedig",
                 Price = 5000,
                 SoldDate = DateTime.Today,
                 BirthDate = DateTime.Now.AddYears(2016).AddMonths(5).AddDays(17),

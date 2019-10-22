@@ -8,10 +8,12 @@ namespace PetShopV2.ConsoleApp
     public class Printer : IPrinter
     {
         private readonly IPetService _petService;
+        private readonly IOwnerService _ownerService;
 
-        public Printer(IPetService petService)
+        public Printer(IPetService petService, IOwnerService ownerService)
         {
             _petService = petService;
+            _ownerService = ownerService;
         }
 
         public void StartUI()
@@ -24,12 +26,13 @@ namespace PetShopV2.ConsoleApp
                 "Manage Pet",
                 "Check out the 5 cheapest Pets",
                 "Search Pet by Type",
+                "Check out Owners",
                 "Exit"
             };
 
             var selection = ShowMenu(menuItems);
 
-            while (selection != 7)
+            while (selection != 8)
             {
                 switch (selection)
                 {
@@ -199,9 +202,9 @@ namespace PetShopV2.ConsoleApp
                 Console.WriteLine("Must have an owner");
             }
 
-            Pet pet = _petService.newPet(name, type, birthdate, color, priced, previousOwner);
+            Pet pet = _petService.NewPet(name, type, birthdate, color, priced, previousOwner);
             Console.WriteLine("Pet have been added! ");
-            _petService.createPet(pet);
+            _petService.CreatePet(pet);
         }
 
         private void ListOfPets(List<Pet> pets)
@@ -229,7 +232,11 @@ namespace PetShopV2.ConsoleApp
 
         #endregion
 
+        #region Owner Related methods
 
+        
+
+        #endregion
         private int ShowMenu(string[] menuItems)
         {
             Console.WriteLine("Select what you want to do\n");
@@ -242,9 +249,9 @@ namespace PetShopV2.ConsoleApp
             int selection;
             while (!int.TryParse(Console.ReadLine(), out selection)
                    || selection < 1
-                   || selection > 7)
+                   || selection > 8)
             {
-                Console.WriteLine("Please select a number between 1-5");
+                Console.WriteLine("Please select a number between 1-8");
             }
 
             return selection;
@@ -264,7 +271,7 @@ namespace PetShopV2.ConsoleApp
                 Console.WriteLine("Results:");
                 foreach (var pet in searchResults)
                 {
-                    Console.WriteLine(pet.Name + " the " + pet.Type);
+                    Console.WriteLine("Name: " + pet.Name + " Type: " + pet.Type);
                 }
             }
             else
